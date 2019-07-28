@@ -7,6 +7,7 @@ import Colors from "../../constants/Colors";
 import UserPartials from "../../components/UserPartials";
 import UserReview from "../../components/UserReview";
 import ATC from "../../components/ATC";
+import {SERVER_URL} from "../../constant";
 import { withNavigation } from "react-navigation";
 
 const getHeight = () =>
@@ -39,7 +40,7 @@ const TimeLocation = styled.Text`
 `;
 
 const NamePrice = styled.View`
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   margin-bottom: 20px;
 `;
@@ -79,22 +80,44 @@ color: ${Colors.blackColor};
 font-weight: 600;
 margin-bottom: 25px;
 `;
+
+function formatRupiah(angka, prefix){
+	var number_string = angka.replace(/[^,\d]/g, '').toString(),
+	split   		= number_string.split(','),
+	sisa     		= split[0].length % 3,
+	rupiah     		= split[0].substr(0, sisa),
+	ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+ 
+	// tambahkan titik jika yang di input sudah menjadi angka ribuan
+	if(ribuan){
+		var separator = sisa ? '.' : '';
+		rupiah += separator + ribuan.join('.');
+	}
+ 
+	rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+	return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
+}
+
 class ProductScreenPresenter extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
-      dataSource:{image_url:"",name:"",price:"",images:[]}
+      dataSource:{image_url:"https://1zmwq81820r61pswmu19upqf-wpengine.netdna-ssl.com/wp-content/uploads/2019/02/dummy.png",name:"",price:"",images:[]},
+      images:[]
      };
    }
    componentDidMount(){
-    fetch("http://homia.id/api/homia/public/product/" + this.props.navigation.getParam("itemId", 0))
+    fetch(SERVER_URL+"/product/" + this.props.navigation.getParam("itemId", 0))
     .then(response => response.json())
     .then((responseJson)=> {
       this.setState({
        loading: false,
        dataSource: responseJson
-      })
+      });
+      var joined = this.state.images.concat({"image_url":this.state.dataSource.image_url,"id":-1});
+      joined = joined.concat(this.state.dataSource.images);
+      this.setState({ images: joined })
     })
     .catch(error=>console.log(error)) //to catch the errors if any
     }
@@ -108,34 +131,23 @@ class ProductScreenPresenter extends Component {
               activeDotColor="white"
               dotColor="rgba(255, 255, 255, 0.3)"
             >
-              <Image
-                source={{
-                  uri:
-                    this.state.dataSource.image_url
-                }}
-              />
-              {
-                this.state.dataSource.images.map((data) => {
-                  console.log(data);
-                  if(!data)
-                  return null;
-                  else
+              {this.state.images.map((data) => {
                   return(
                     <Image
+                    key={data.id}
                       source={{
                         uri:
                           data.image_url
                       }}
                     />
                   );
-                })
-              }
+              })}
             </Swiper>
             <DataContainer>
-              <TimeLocation>Seoul, S. Korea • 2h ago</TimeLocation>
+              <TimeLocation>Jakarta, Indonesia • 2h ago</TimeLocation>
               <NamePrice>
                 <NamePriceText>{this.state.dataSource.name}</NamePriceText>
-                <NamePriceText>Rp {this.state.dataSource.price}</NamePriceText>
+                <NamePriceText>{formatRupiah(this.state.dataSource.price+"", "")}</NamePriceText>
               </NamePrice>
               <Divider />
               <Description>

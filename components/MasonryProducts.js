@@ -33,7 +33,7 @@ const MasonryProducts = ({ products, children = null }) => (
         {splitArray(products).firstHalf.map(product => (
           <ProductCard
             imgSrc={product.image_url}
-            price={product.price}
+            price={product.price+""}
             name={product.name}
             id={product.id}
             key={product.name}
@@ -44,7 +44,7 @@ const MasonryProducts = ({ products, children = null }) => (
         {splitArray(products).secondHalf.map(product => (
           <ProductCard
             imgSrc={product.image_url}
-            price={product.price}
+            price={product.price+""}
             name={product.name}
             id={product.id}
             key={product.name}

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import MasonryProducts from "../../components/MasonryProducts";
 import { StatusBar } from "react-native";
+import {SERVER_URL} from "../../constant";
 
 const Container = styled.View`
   background-color: white;
@@ -16,7 +17,7 @@ class HomeScreenPresenter extends Component {
      };
    }
    componentDidMount(){
-    fetch("http://homia.id/api/homia/public/product")
+    fetch(SERVER_URL+"/product")
     .then(response => response.json())
     .then((responseJson)=> {
       this.setState({

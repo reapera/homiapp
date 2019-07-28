@@ -17,13 +17,13 @@ const ImageContainer = styled.View`
   border-radius: 15px;
   elevation: 4;
   margin-bottom: 15px;
-  min-height: 150px;
 `;
 
 const Name = styled.Text`
   color: ${Colors.greyColor};
   margin-left: 10px;
   margin-bottom: 10px;
+  width: ${Layout.window.width / 2 - 50};
 `;
 
 const Price = styled.Text`
@@ -31,6 +31,23 @@ const Price = styled.Text`
   margin-left: 10px;
   color: ${Colors.blackColor};
 `;
+
+function formatRupiah(angka, prefix){
+	var number_string = angka.replace(/[^,\d]/g, '').toString(),
+	split   		= number_string.split(','),
+	sisa     		= split[0].length % 3,
+	rupiah     		= split[0].substr(0, sisa),
+	ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+ 
+	// tambahkan titik jika yang di input sudah menjadi angka ribuan
+	if(ribuan){
+		var separator = sisa ? '.' : '';
+		rupiah += separator + ribuan.join('.');
+	}
+ 
+	rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+	return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
+}
 
 const ProductCard = ({ imgSrc, name, price, id, navigation }) => (
   <TouchableWithoutFeedback onPress={() => navigation.navigate("Product", {
@@ -47,7 +64,7 @@ const ProductCard = ({ imgSrc, name, price, id, navigation }) => (
         />
       </ImageContainer>
       <Name>{name}</Name>
-      <Price>{`Rp ${price}`}</Price>
+      <Price>{`${formatRupiah(price,"")}`}</Price>
     </Container>
   </TouchableWithoutFeedback>
 );
