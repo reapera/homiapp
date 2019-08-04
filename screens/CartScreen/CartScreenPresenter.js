@@ -4,7 +4,8 @@ import { Text, View, Image } from 'react-native';
 import Counter from "react-native-counters";
 import CheckBox from 'react-native-check-box'
 import { connect } from 'react-redux'
-import MasonryProducts from "../../components/MasonryProducts";
+import Layout from "../../constants/Layout";
+import AutoHeightImage from "react-native-auto-height-image";
 
 const Container = styled.View `
   background-color: lightgray;
@@ -63,6 +64,17 @@ margin-left:10px;
 `;
 const Row = styled.View `
 flex-direction:row;
+`;
+const NoData = styled.View `
+flex-direction:column;
+justify-content:center;
+text-align:center;
+height:80%;
+`;
+const Centering = styled.View `
+flex-direction:row;
+justify-content:center;
+text-align:center;
 `;
 
 function formatRupiah(angka, prefix){
@@ -125,7 +137,20 @@ class CartScreenPresenter extends Component {
                     </CartContainer> 
                   </Row> 
                   );
-              }) : <Text>No items in your cart</Text>
+              }) : <NoData>
+                  <Centering>
+                  <AutoHeightImage
+                    width={Layout.window.width /2}
+                    source={require("../../assets/images/kabut.png")}
+                  />
+                  </Centering>
+                  <Centering>
+                  <Text>Tidak ada barang di cart</Text>
+                  </Centering>
+                  <Centering>
+                  <Text>Mulai beli sekarang!</Text>
+                  </Centering>
+                  </NoData>
           }
       </Container>
         );
