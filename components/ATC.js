@@ -86,6 +86,23 @@ const Divider = styled.View`
   background-color: rgba(151, 151, 151, 0.1);
   margin-bottom: 25px;
 `;
+
+function formatRupiah(angka, prefix){
+	var number_string = angka.replace(/[^,\d]/g, '').toString(),
+	split   		= number_string.split(','),
+	sisa     		= split[0].length % 3,
+	rupiah     		= split[0].substr(0, sisa),
+	ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+ 
+	// tambahkan titik jika yang di input sudah menjadi angka ribuan
+	if(ribuan){
+		var separator = sisa ? '.' : '';
+		rupiah += separator + ribuan.join('.');
+	}
+ 
+	rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+	return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
+}
 class ATC extends Component {
     state = {
         modalVisible: false,
@@ -114,7 +131,7 @@ class ATC extends Component {
             transparent={true}
             visible={this.state.modalVisible}
             onRequestClose={() => {
-                Alert.alert('Modal has been closed.');
+              this.setModalVisible(!this.state.modalVisible);
             }}>
                 <ModalBackground></ModalBackground>
                 <ModalContent>
@@ -123,14 +140,14 @@ class ATC extends Component {
                             <Image
                             source={{
                                 uri:
-                                "https://i.pinimg.com/564x/8f/27/44/8f27446e4f69541cb465e50b93dae15e.jpg"
+                                this.props.product.image_url
                             }}
                             resizeMode="cover"
                             style={{width: 64, height: 64, borderRadius:10, marginRight:10}}
                             />
                         <View>
-                            <NamePriceText>MVMTH Watch</NamePriceText>
-                            <NamePriceText>Rp 49</NamePriceText>
+                            <NamePriceText>{this.props.product.name}</NamePriceText>
+                            <NamePriceText>{formatRupiah(this.props.product.price+"","")}</NamePriceText>
                         </View>
                         </ModalHeader>
                     <TouchableHighlight
@@ -145,7 +162,7 @@ class ATC extends Component {
                     <Text>Jumlah</Text>
                     <Counter start={1} onChange={this.onChange.bind(this)} max={100} touchableColor="gray" touchableDisabledColor="lightgray"/>
                     </Quantity>
-                    <ATCbtn onPress={() => { this.props.navigation.navigate("Cart") }}>
+                    <ATCbtn onPress={() => { this.props.onPress(this.props.product) }}>
                         <BtnText>Masukan ke Keranjang</BtnText>
                     </ATCbtn>
                 </ModalContent>

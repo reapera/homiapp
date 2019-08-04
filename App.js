@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { AppLoading, Asset, Font } from "expo";
 
 import AppNavigator from "./navigation/AppNavigator";
+import { Provider } from 'react-redux'
+import store from './store'
 
 const Container = styled.View`
   flex: 1;
@@ -47,7 +49,9 @@ export default class App extends React.Component {
     return (
       <Container>
         {Platform.OS === "ios" && <StatusBar barStyle="default" />}
-        <AppNavigator />
+        <Provider store={store}>
+          <AppNavigator />
+        </Provider>
       </Container>
     );
   }

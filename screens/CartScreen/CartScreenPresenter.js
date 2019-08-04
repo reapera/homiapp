@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { Text, View, Image } from 'react-native';
 import Counter from "react-native-counters";
 import CheckBox from 'react-native-check-box'
+import { connect } from 'react-redux'
+import MasonryProducts from "../../components/MasonryProducts";
 
 const Container = styled.View `
   background-color: lightgray;
@@ -62,6 +64,23 @@ margin-left:10px;
 const Row = styled.View `
 flex-direction:row;
 `;
+
+function formatRupiah(angka, prefix){
+	var number_string = angka.replace(/[^,\d]/g, '').toString(),
+	split   		= number_string.split(','),
+	sisa     		= split[0].length % 3,
+	rupiah     		= split[0].substr(0, sisa),
+	ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+ 
+	// tambahkan titik jika yang di input sudah menjadi angka ribuan
+	if(ribuan){
+		var separator = sisa ? '.' : '';
+		rupiah += separator + ribuan.join('.');
+	}
+ 
+	rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+	return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
+}
 class CartScreenPresenter extends Component {
     onChange(number, type) {
         // 1, + or -
@@ -72,39 +91,58 @@ class CartScreenPresenter extends Component {
     render() {
         return ( 
         <Container>
-          <Row>
-            <CheckBoxContainer>
-              <CheckBox 
-              onClick = {() => {this.setState({isChecked: !this.state.isChecked})    }}
-              isChecked = {this.state.isChecked}
-              checkBoxColor = "orange" 
-              />
-            </CheckBoxContainer> 
-            <CartContainer>
-              <Image 
-              source = {{uri: "https://i.pinimg.com/564x/8f/27/44/8f27446e4f69541cb465e50b93dae15e.jpg"}}
-              resizeMode = "cover"
-              style = {{width: 64, height: 64, borderRadius: 10, marginRight: 10 }}
-              /> 
-              <CartDet>
-                <TitleWrapper>
-                <Text> MVMTH Watch </Text> 
-                </TitleWrapper>
-                <QPWrapper>
-                  <QWrapper>
-                  <Counter start = { 1 }onChange = { this.onChange.bind(this) }max = { 100 }touchableColor = "gray"touchableDisabledColor = "lightgray" />
-                  </QWrapper> 
-                  <Price>
-                    <DiscountedPrice> Rp 200.000 </DiscountedPrice> 
-                    <ActualPrice style = {    { textDecorationLine: 'line-through', textDecorationStyle: 'solid' } }> Rp 250.000 </ActualPrice> 
-                  </Price> 
-                </QPWrapper> 
-              </CartDet> 
-            </CartContainer> 
-          </Row> 
+          {this.props.cartItems.length > 0 ?
+              this.props.cartItems.map((data) => {
+                  return(
+                    <Row>
+                    <CheckBoxContainer>
+                      <CheckBox 
+                      onClick = {() => {this.setState({isChecked: !this.state.isChecked})    }}
+                      isChecked = {this.state.isChecked}
+                      checkBoxColor = "orange" 
+                      />
+                    </CheckBoxContainer> 
+                    <CartContainer>
+                      <Image 
+                      source = {{uri: data.image_url}}
+                      resizeMode = "cover"
+                      style = {{width: 64, height: 64, borderRadius: 10, marginRight: 10 }}
+                      /> 
+                      <CartDet>
+                        <TitleWrapper>
+                        <Text> {data.name} </Text> 
+                        </TitleWrapper>
+                        <QPWrapper>
+                          <QWrapper>
+                          <Counter start = { 1 }onChange = { this.onChange.bind(this) }max = { 100 }touchableColor = "gray"touchableDisabledColor = "lightgray" />
+                          </QWrapper> 
+                          <Price>
+                            <DiscountedPrice> {formatRupiah(data.price+"","")} </DiscountedPrice> 
+                            <ActualPrice style = {    { textDecorationLine: 'line-through', textDecorationStyle: 'solid' } }> {formatRupiah(data.display_price+"","")} </ActualPrice> 
+                          </Price> 
+                        </QPWrapper> 
+                      </CartDet> 
+                    </CartContainer> 
+                  </Row> 
+                  );
+              }) : <Text>No items in your cart</Text>
+          }
       </Container>
         );
     }
 }
 
-export default CartScreenPresenter;
+const mapStateToProps = (state) => {
+  return {
+      cartItems: state
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      removeItem: (product) => dispatch({ type: 'REMOVE_FROM_CART', payload: product })
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(CartScreenPresenter);

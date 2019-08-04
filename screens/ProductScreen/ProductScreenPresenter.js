@@ -9,6 +9,7 @@ import UserReview from "../../components/UserReview";
 import ATC from "../../components/ATC";
 import {SERVER_URL} from "../../constant";
 import { withNavigation } from "react-navigation";
+import { connect } from 'react-redux'
 
 const getHeight = () =>
   Layout.window.height <= 667
@@ -185,10 +186,16 @@ class ProductScreenPresenter extends Component {
           </ScrollView>
           <ATC 
           name="Beli Sekarang"
+          product={this.state.dataSource}
+          onPress={this.props.addItemToCart}
           />
         </Container>
       );
     }
 }
-
-export default withNavigation(ProductScreenPresenter);
+const mapDispatchToProps = (dispatch) => {
+  return {
+      addItemToCart: (product) => dispatch({ type: 'ADD_TO_CART', payload: product })
+  }
+}
+export default connect(null, mapDispatchToProps)(withNavigation(ProductScreenPresenter));
