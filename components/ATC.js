@@ -111,8 +111,9 @@ class ATC extends Component {
       setModalVisible(visible) {
         this.setState({modalVisible: visible});
       }
+      qty;
       onChange(number, type) {
-        // 1, + or -
+        this.qty = number;
       }
       
       render() {
@@ -162,7 +163,7 @@ class ATC extends Component {
                     <Text>Jumlah</Text>
                     <Counter start={1} onChange={this.onChange.bind(this)} max={100} touchableColor="gray" touchableDisabledColor="lightgray"/>
                     </Quantity>
-                    <ATCbtn onPress={() => { this.props.onPress(this.props.product);this.setModalVisible(!this.state.modalVisible); }}>
+                    <ATCbtn onPress={() => { this.props.onPress(this.props.product, this.qty);this.setModalVisible(!this.state.modalVisible); this.qty=1;}}>
                         <BtnText>Masukan ke Keranjang</BtnText>
                     </ATCbtn>
                 </ModalContent>

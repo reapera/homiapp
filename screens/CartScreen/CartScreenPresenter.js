@@ -101,57 +101,61 @@ class CartScreenPresenter extends Component {
         isChecked: false,
     };
     render() {
+      let addedItems = this.props.cartItems.length > 0 ?
+      (
+      this.props.cartItems.map((data) => {
+          return(
+            <Row key={'mykey' + data.id}>
+            <CheckBoxContainer>
+              <CheckBox 
+              onClick = {() => {this.setState({isChecked: !this.state.isChecked})    }}
+              isChecked = {this.state.isChecked}
+              checkBoxColor = "orange" 
+              />
+            </CheckBoxContainer> 
+            <CartContainer>
+              <Image 
+              source = {{uri: data.image_url}}
+              resizeMode = "cover"
+              style = {{width: 64, height: 64, borderRadius: 10, marginRight: 10 }}
+              /> 
+              <CartDet>
+                <TitleWrapper>
+                <Text> {data.name} {data.quantity}</Text> 
+                </TitleWrapper>
+                <QPWrapper>
+                  <QWrapper>
+                  <Counter start = { data.quantity }onChange = { this.onChange.bind(this) }max = { 100 }touchableColor = "gray"touchableDisabledColor = "lightgray" />
+                  </QWrapper> 
+                  <Price>
+                    <DiscountedPrice> {formatRupiah(data.price+"","")} </DiscountedPrice> 
+                    <ActualPrice style = {    { textDecorationLine: 'line-through', textDecorationStyle: 'solid' } }> {formatRupiah(data.display_price+"","")} </ActualPrice> 
+                  </Price> 
+                </QPWrapper> 
+              </CartDet> 
+            </CartContainer> 
+          </Row> 
+          );
+      }) 
+      ):(
+      <NoData>
+          <Centering>
+          <AutoHeightImage
+            width={Layout.window.width /2}
+            source={require("../../assets/images/kabut.png")}
+          />
+          </Centering>
+          <Centering>
+          <Text>Tidak ada barang di cart</Text>
+          </Centering>
+          <Centering>
+          <Text>Mulai beli sekarang!</Text>
+          </Centering>
+          </NoData>
+      )
         return ( 
         <Container>
-          {this.props.cartItems.length > 0 ?
-              this.props.cartItems.map((data) => {
-                  return(
-                    <Row>
-                    <CheckBoxContainer>
-                      <CheckBox 
-                      onClick = {() => {this.setState({isChecked: !this.state.isChecked})    }}
-                      isChecked = {this.state.isChecked}
-                      checkBoxColor = "orange" 
-                      />
-                    </CheckBoxContainer> 
-                    <CartContainer>
-                      <Image 
-                      source = {{uri: data.image_url}}
-                      resizeMode = "cover"
-                      style = {{width: 64, height: 64, borderRadius: 10, marginRight: 10 }}
-                      /> 
-                      <CartDet>
-                        <TitleWrapper>
-                        <Text> {data.name} </Text> 
-                        </TitleWrapper>
-                        <QPWrapper>
-                          <QWrapper>
-                          <Counter start = { 1 }onChange = { this.onChange.bind(this) }max = { 100 }touchableColor = "gray"touchableDisabledColor = "lightgray" />
-                          </QWrapper> 
-                          <Price>
-                            <DiscountedPrice> {formatRupiah(data.price+"","")} </DiscountedPrice> 
-                            <ActualPrice style = {    { textDecorationLine: 'line-through', textDecorationStyle: 'solid' } }> {formatRupiah(data.display_price+"","")} </ActualPrice> 
-                          </Price> 
-                        </QPWrapper> 
-                      </CartDet> 
-                    </CartContainer> 
-                  </Row> 
-                  );
-              }) : <NoData>
-                  <Centering>
-                  <AutoHeightImage
-                    width={Layout.window.width /2}
-                    source={require("../../assets/images/kabut.png")}
-                  />
-                  </Centering>
-                  <Centering>
-                  <Text>Tidak ada barang di cart</Text>
-                  </Centering>
-                  <Centering>
-                  <Text>Mulai beli sekarang!</Text>
-                  </Centering>
-                  </NoData>
-          }
+          {addedItems}
       </Container>
         );
     }
@@ -159,7 +163,7 @@ class CartScreenPresenter extends Component {
 
 const mapStateToProps = (state) => {
   return {
-      cartItems: state
+      cartItems: state.items
   }
 }
 

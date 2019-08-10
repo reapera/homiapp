@@ -195,7 +195,7 @@ class ProductScreenPresenter extends Component {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-      addItemToCart: (product) => dispatch({ type: 'ADD_TO_CART', payload: product })
+      addItemToCart: (product,qty) => dispatch({ type: 'ADD_TO_CART', payload: {"product":product,"qty":qty}})
   }
 }
 export default connect(null, mapDispatchToProps)(withNavigation(ProductScreenPresenter));
