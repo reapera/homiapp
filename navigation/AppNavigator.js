@@ -4,6 +4,7 @@ import { Platform } from "react-native";
 import MainTabNavigator from "./MainTabNavigator";
 import AuthNavigator from "./AuthNavigator";
 import ProductScreen from "../screens/ProductScreen";
+import CheckoutScreen from "../screens/CheckoutScreen";
 import ThreadScreen from "../screens/ThreadScreen";
 import Colors from "../constants/Colors";
 
@@ -37,7 +38,14 @@ const ScreensStack = createStackNavigator({
             headerTintColor: Colors.blackColor,
             headerTitleStyle: { fontSize: 14, color: Colors.blackColor }
         }
-    }
+    },
+    Checkout: {
+        screen: CheckoutScreen,
+        navigationOptions: {
+            headerTintColor: "black",
+            headerTransparent: false
+        }
+    },
 }, {
     initialRouteName: "Tabs",
     headerMode: "screen"

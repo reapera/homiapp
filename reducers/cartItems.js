@@ -5,19 +5,17 @@ const cartItems = (state = { items: [], total: 0 }, action) => {
                 //check if the action id exists in the items
             let existed_item = state.items.find(item => action.payload.product.id === item.id)
             if (existed_item) {
-                console.log(action.payload);
-                console.log(existed_item.quantity);
-                existed_item.quantity += action.payload.qty
-                console.log(existed_item.quantity);
-                console.log(state.items);
+                existed_item.quantity += action.payload.qty;
+                existed_item.selected = true;
                 return {
                     ...state,
-                    total: state.total + existed_item.price
+                    total: state.total + existed_item.price * existed_item.quantity
                 }
             } else {
                 addedItem.quantity = action.payload.qty;
+                addedItem.selected = true;
                 //calculating the total
-                let newTotal = state.total + addedItem.price
+                let newTotal = state.total + addedItem.price * addedItem.quantity
                 console.log(addedItem);
                 return {
                     ...state,

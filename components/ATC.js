@@ -163,7 +163,7 @@ class ATC extends Component {
                     <Text>Jumlah</Text>
                     <Counter start={1} onChange={this.onChange.bind(this)} max={100} touchableColor="gray" touchableDisabledColor="lightgray"/>
                     </Quantity>
-                    <ATCbtn onPress={() => { this.props.onPress(this.props.product, this.qty);this.setModalVisible(!this.state.modalVisible); this.qty=1;}}>
+                    <ATCbtn onPress={() => { this.props.onPress(this.props.product, this.qty);this.setModalVisible(!this.state.modalVisible); this.qty=1;this.props.navigation.navigate("Cart");}}>
                         <BtnText>Masukan ke Keranjang</BtnText>
                     </ATCbtn>
                 </ModalContent>

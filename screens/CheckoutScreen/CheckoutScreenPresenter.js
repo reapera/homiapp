@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Text, View, Image } from 'react-native';
-import { withNavigation } from "react-navigation";
-import Counter from "react-native-counters";
-import CheckBox from 'react-native-check-box'
 import { connect } from 'react-redux'
 import Layout from "../../constants/Layout";
 import AutoHeightImage from "react-native-auto-height-image";
+import { Ionicons } from "@expo/vector-icons";
+import Colors from "../../constants/Colors";
 
 const Container = styled.View `
   background-color: #e8e9ec;
@@ -28,7 +27,13 @@ const CartDet = styled.View `
   justify-content: space-between;
   flex:1;
   `;
-
+  const CheckoutDetail = styled.View `
+    flex:10;
+    flex-direction: column;
+    justify-content: space-between;
+    padding:10px;
+    `;
+  
 const Price = styled.View `
 flex-direction: column;
 justify-content:flex-end;
@@ -58,11 +63,6 @@ const ActualPrice = styled.Text `
 text-align:right;
 font-size:10;
 `;
-const CheckBoxContainer = styled.View `
-flex-direction: column;
-justify-content: center;
-margin-left:10px;
-`;
 const Row = styled.View `
 flex-direction:row;
 `;
@@ -77,26 +77,14 @@ flex-direction:row;
 justify-content:center;
 text-align:center;
 `;
-
-const Righting = styled.View `
-flex-direction:row;
-justify-content:flex-end;
-text-align:right;
-`;
-const Lefting = styled.View `
-flex-direction:row;
-justify-content:flex-start;
-text-align:left;
-`;
 const CheckoutContainer = styled.View`
 position:absolute;
 bottom:0px;
-height:60px;
 background:white;
 padding:10px;
 width:100%;
-flex-direction: row;
-justify-content: space-between;
+flex-direction: column;
+justify-content: flex-end;
 `;
 
 const ATCbtn = styled.TouchableOpacity`
@@ -104,19 +92,37 @@ background-color:orange;
 color:white;
 border-radius:100px;
 height:40px;
-width:200px;
 padding:10px;
 `;
 const BtnText = styled.Text`
 color:white;
 text-align:center;
 `;
-const CenterText = styled.Text`
+const TotalText = styled.Text`
+font-size:20px;
+font-weight:bold;
+`;
+const TextBetween = styled.View`
+flex-direction: row;
+justify-content: space-between;
+margin-bottom:10px;
+`;
+const TotalTextBetween = styled.View`
+flex-direction: row;
+justify-content: space-between;
+margin-top:10px;
+`;
+const SubtotalDetails = styled.View`
 flex-direction: column;
-justify-content: center;
-padding-left:10px;
-padding-right:10px;
-padding-top:10px;
+justify-content: flex-end;
+padding:20px;
+`;
+const ViewBox = styled.View`
+padding-left:25px;
+padding-top:5px;
+`;
+const IconContainer = styled.View`
+width:22px;
 `;
 function formatRupiah(angka, prefix){
 	var number_string = angka.replace(/[^,\d]/g, '').toString(),
@@ -134,7 +140,7 @@ function formatRupiah(angka, prefix){
 	rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
 	return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
 }
-class CartScreenPresenter extends Component {
+class CheckoutScreenPresenter extends Component {
     onChange(number, type) {
         // 1, + or -
     }
@@ -142,18 +148,71 @@ class CartScreenPresenter extends Component {
         isChecked: false,
     };
     render() {
+      let sendAddress = (
+      <Row>
+      <CartContainer>
+        <CheckoutDetail>
+          <Row>
+          <IconContainer>
+            <Ionicons
+              name={"ios-pin"}
+              color={Colors.blackColor}
+              size={24}
+            />
+          </IconContainer>
+          <TotalText> Alamat Pengiriman</TotalText> 
+          </Row>
+          <ViewBox>
+          <Text style={{fontWeight:'bold'}}>Spain Louis Senduk</Text>
+          <Text>089698795462</Text>
+          <Text>Jalan Cemara, Tambun - Bekasi</Text>
+          <Text>Jawa Barat</Text>
+          </ViewBox>
+        </CheckoutDetail>  
+        <View style={{flexGrow: 1, justifyContent:'center', alignItems: 'center'}}>
+          <Ionicons
+            name={"ios-arrow-forward"}
+            color={Colors.blackColor}
+            size={26}
+          />
+        </View>
+      </CartContainer> 
+    </Row> 
+    );
+    
+    let paymentMethod = (
+      <Row>
+      <CartContainer>
+        <CheckoutDetail>
+          <Row>
+          <IconContainer>
+            <Ionicons
+              name={"ios-cash"}
+              color={Colors.blackColor}
+              size={20}
+            />
+          </IconContainer>
+          <TotalText> Metode Pembayaran</TotalText> 
+          </Row>
+          <ViewBox>
+          <Text>BCA Virtual Account</Text>
+          </ViewBox>
+        </CheckoutDetail>  
+        <View style={{flexGrow: 1, justifyContent:'center', alignItems: 'center'}}>
+          <Ionicons
+            name={"ios-arrow-forward"}
+            color={Colors.blackColor}
+            size={26}
+          />
+        </View>
+      </CartContainer> 
+    </Row> 
+    );
       let addedItems = this.props.cartItems.length > 0 ?
       (
       this.props.cartItems.map((data) => {
           return(
             <Row key={'mykey' + data.id}>
-            <CheckBoxContainer>
-              <CheckBox  key={'chk' + data.id}
-              onClick = {() => { }}
-              isChecked = {data.selected}
-              checkBoxColor = "orange" 
-              />
-            </CheckBoxContainer> 
             <CartContainer>
               <Image 
               source = {{uri: data.image_url}}
@@ -166,7 +225,7 @@ class CartScreenPresenter extends Component {
                 </TitleWrapper>
                 <QPWrapper>
                   <QWrapper>
-                  <Counter start = { data.quantity }onChange = { this.onChange.bind(this) }max = { 100 }touchableColor = "gray"touchableDisabledColor = "lightgray" />
+                    <Text>Qty: { data.quantity }</Text>
                   </QWrapper> 
                   <Price>
                     <DiscountedPrice> {formatRupiah(data.price+"","")} </DiscountedPrice> 
@@ -196,28 +255,28 @@ class CartScreenPresenter extends Component {
       )
         return ( 
         <Container>
+          {sendAddress}
+          {paymentMethod}
           {addedItems}
-          {this.props.cartItems.length > 0 ? (
-            <CheckoutContainer>
-            <Lefting>
-            <CheckBoxContainer>
-              <CheckBox 
-              onClick = {() => {this.setState({isChecked: !this.state.isChecked})    }}
-              isChecked = {this.state.isChecked}
-              checkBoxColor = "orange" 
-              />
-            </CheckBoxContainer> 
-            <CenterText>Pilih Semua</CenterText>
-            </Lefting>
-            <Righting>
-            <CenterText>SubTotal: <DiscountedPrice> {formatRupiah(this.props.total+"","")} </DiscountedPrice></CenterText>
+          <CheckoutContainer>
+            <SubtotalDetails>
+            <TextBetween>
+              <Text>SubTotal untuk Produk:</Text> 
+              <Text>{formatRupiah(this.props.total+"","")}</Text>
+            </TextBetween>
+            <TextBetween>
+              <Text>SubTotal untuk Pengiriman:</Text> 
+              <Text>{formatRupiah(90000+"","")}</Text>
+            </TextBetween>
+            <TotalTextBetween>
+              <TotalText>Total Pembayaran:</TotalText> 
+              <TotalText><DiscountedPrice>{formatRupiah(this.props.total+90000+"","")}</DiscountedPrice></TotalText>
+            </TotalTextBetween>
+            </SubtotalDetails>
             <ATCbtn>
-                <BtnText  onPress={() => this.props.navigation.navigate("Checkout")}>Checkout</BtnText>
+                <BtnText>Buat Pesanan</BtnText>
             </ATCbtn>
-            </Righting>
           </CheckoutContainer>
-          ): (<Text></Text>)}
-          
         </Container>
         );
     }
@@ -237,4 +296,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(CartScreenPresenter));
+export default connect(mapStateToProps, mapDispatchToProps)(CheckoutScreenPresenter);
