@@ -111,7 +111,7 @@ class ATC extends Component {
       setModalVisible(visible) {
         this.setState({modalVisible: visible});
       }
-      qty;
+      qty=1;
       onChange(number, type) {
         this.qty = number;
       }
