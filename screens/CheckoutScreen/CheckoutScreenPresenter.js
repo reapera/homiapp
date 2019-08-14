@@ -7,6 +7,7 @@ import AutoHeightImage from "react-native-auto-height-image";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 
+const ScrollView = styled.ScrollView``;
 const Container = styled.View `
   background-color: #e8e9ec;
   flex: 1;
@@ -255,9 +256,11 @@ class CheckoutScreenPresenter extends Component {
       )
         return ( 
         <Container>
+        <ScrollView contentContainerStyle={{ paddingBottom: 40 }} bounces={false}>
           {sendAddress}
           {paymentMethod}
           {addedItems}
+          </ScrollView>
           <CheckoutContainer>
             <SubtotalDetails>
             <TextBetween>

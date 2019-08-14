@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import Layout from "../../constants/Layout";
 import AutoHeightImage from "react-native-auto-height-image";
 
+const ScrollView = styled.ScrollView``;
 const Container = styled.View `
   background-color: #e8e9ec;
   flex: 1;
@@ -196,7 +197,10 @@ class CartScreenPresenter extends Component {
       )
         return ( 
         <Container>
+          
+          <ScrollView contentContainerStyle={{ paddingBottom: 40 }} bounces={false}>
           {addedItems}
+          </ScrollView>
           {this.props.cartItems.length > 0 ? (
             <CheckoutContainer>
             <Lefting>
@@ -217,7 +221,6 @@ class CartScreenPresenter extends Component {
             </Righting>
           </CheckoutContainer>
           ): (<Text></Text>)}
-          
         </Container>
         );
     }
