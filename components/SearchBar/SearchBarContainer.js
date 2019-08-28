@@ -25,12 +25,16 @@ export default class extends React.Component {
         this.setState({
             value: ""
         });
+        this.onSubmit(false);
     };
 
-    onSubmit = () => {
+    onSubmit = clear => {
         const { value } = this.state;
         const { onSubmit } = this.props;
-        onSubmit(value);
+        if (clear)
+            onSubmit(value);
+        else
+            onSubmit("");
     };
 
     render() {

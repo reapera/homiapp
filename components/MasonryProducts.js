@@ -1,7 +1,11 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Text, View, Image } from 'react-native';
 import styled from "styled-components";
 import ProductCard from "./ProductCard";
+import Layout from "../constants/Layout";
+import Colors from "../constants/Colors";
+import AutoHeightImage from "react-native-auto-height-image";
 
 const Column = styled.View``;
 
@@ -12,6 +16,23 @@ const MasonryContainer = styled.View`
   justify-content: space-between;
 `;
 
+const NoData = styled.View `
+flex-direction:column;
+justify-content:center;
+text-align:center;
+height:500;
+`;
+const Centering = styled.View `
+flex-direction:row;
+justify-content:center;
+text-align:center;
+`;
+const Space = styled.View `
+margin:5px;
+`;
+const GreyText = styled.Text `
+color:${Colors.greyColor}
+`;
 const splitArray = arr => {
   const { length } = arr;
   const half = length / 2;
@@ -19,21 +40,19 @@ const splitArray = arr => {
   const secondHalf = arr.slice(half, length);
   return { firstHalf, secondHalf };
 };
-
-const MasonryProducts = ({ products, children = null }) => (
-  <ScrollView
-    contentContainerStyle={{
-      paddingHorizontal: 20,
-      paddingVertical: 15
-    }}
-  >
-    {children}
+class MasonryProducts extends Component {
+  
+  render() {
+    let products = this.props.products.length > 0 ?
+    (
     <MasonryContainer>
-      <Column>
-        {splitArray(products).firstHalf.map(product => (
+      
+    <Column>
+        {splitArray(this.props.products).firstHalf.map(product => (
           <ProductCard
             imgSrc={product.image_url}
             price={product.price+""}
+            display_price={product.display_price+""}
             name={product.name}
             id={product.id}
             key={product.name}
@@ -41,10 +60,11 @@ const MasonryProducts = ({ products, children = null }) => (
         ))}
       </Column>
       <Column>
-        {splitArray(products).secondHalf.map(product => (
+        {splitArray(this.props.products).secondHalf.map(product => (
           <ProductCard
             imgSrc={product.image_url}
             price={product.price+""}
+            display_price={product.display_price+""}
             name={product.name}
             id={product.id}
             key={product.name}
@@ -52,8 +72,37 @@ const MasonryProducts = ({ products, children = null }) => (
         ))}
       </Column>
     </MasonryContainer>
+    ):
+    (
+      <NoData>
+        <Centering>
+        <AutoHeightImage
+          width={Layout.window.width /4}
+          source={require("../assets/images/search_not_found.png")}
+        />
+        </Centering>
+        <Space></Space>
+        <Centering>
+        <GreyText>Maaf, Pencarian tidak ditemukan</GreyText>
+        </Centering>
+        <Centering>
+        <GreyText>Coba cari produk lainnya</GreyText>
+        </Centering>
+      </NoData>
+    )
+    return (
+      <ScrollView
+    contentContainerStyle={{
+      paddingHorizontal: 20,
+      paddingVertical: 15
+    }}
+  >
+    {this.props.children}
+    {products}
   </ScrollView>
-);
+    )
+  }
+}
 
 MasonryProducts.propTypes = {
   products: PropTypes.instanceOf(Array),

@@ -5,7 +5,8 @@ import SearchBar from "../../components/SearchBar";
 
 export default class extends React.Component {
     static navigationOptions = ({ navigation }) => ({
-        headerTitle: < SearchBar onSubmit = { navigation.getParam("onSubmit", null) }
+        headerTitle: < SearchBar 
+        onSubmit = { navigation.getParam("onSubmit", null) }
         />,
         headerStyle: {
             backgroundColor: 'white',

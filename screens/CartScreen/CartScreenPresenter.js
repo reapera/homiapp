@@ -71,7 +71,7 @@ const NoData = styled.View `
 flex-direction:column;
 justify-content:center;
 text-align:center;
-height:80%;
+height:500;
 `;
 const Centering = styled.View `
 flex-direction:row;
@@ -79,16 +79,6 @@ justify-content:center;
 text-align:center;
 `;
 
-const Righting = styled.View `
-flex-direction:row;
-justify-content:flex-end;
-text-align:right;
-`;
-const Lefting = styled.View `
-flex-direction:row;
-justify-content:flex-start;
-text-align:left;
-`;
 const CheckoutContainer = styled.View`
 position:absolute;
 bottom:0px;
@@ -105,20 +95,23 @@ background-color:orange;
 color:white;
 border-radius:100px;
 height:40px;
-width:200px;
 padding:10px;
+flex:1;
 `;
 const BtnText = styled.Text`
 color:white;
 text-align:center;
 `;
 const CenterText = styled.Text`
+font-size:12;
+`;
+const CheckBoxText = styled.View`
 flex-direction: column;
 justify-content: center;
+flex:2;
 padding-left:10px;
-padding-right:10px;
-padding-top:10px;
 `;
+
 function formatRupiah(angka, prefix){
 	var number_string = angka.replace(/[^,\d]/g, '').toString(),
 	split   		= number_string.split(','),
@@ -203,7 +196,7 @@ class CartScreenPresenter extends Component {
           </ScrollView>
           {this.props.cartItems.length > 0 ? (
             <CheckoutContainer>
-            <Lefting>
+            <QPWrapper>
             <CheckBoxContainer>
               <CheckBox 
               onClick = {() => {this.setState({isChecked: !this.state.isChecked})    }}
@@ -211,14 +204,14 @@ class CartScreenPresenter extends Component {
               checkBoxColor = "orange" 
               />
             </CheckBoxContainer> 
+            <CheckBoxText>
             <CenterText>Pilih Semua</CenterText>
-            </Lefting>
-            <Righting>
             <CenterText>SubTotal: <DiscountedPrice> {formatRupiah(this.props.total+"","")} </DiscountedPrice></CenterText>
+            </CheckBoxText>
             <ATCbtn>
                 <BtnText  onPress={() => this.props.navigation.navigate("Checkout")}>Checkout</BtnText>
             </ATCbtn>
-            </Righting>
+            </QPWrapper>
           </CheckoutContainer>
           ): (<Text></Text>)}
         </Container>

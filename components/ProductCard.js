@@ -20,16 +20,29 @@ const ImageContainer = styled.View`
 `;
 
 const Name = styled.Text`
-  color: ${Colors.greyColor};
+  color: ${Colors.lightBlackColor};
   margin-left: 10px;
-  margin-bottom: 10px;
   width: ${Layout.window.width / 2 - 50};
+  margin-bottom: 2px;
+  font-size:14;
 `;
-
+const PriceContainer = styled.View`
+flex-direction:column;
+`;
 const Price = styled.Text`
   font-weight: 600;
   margin-left: 10px;
-  color: ${Colors.blackColor};
+  color:${Colors.blackColor};
+`;
+
+const ActualPriceContainer = styled.View`
+flex-direction:column;
+justify-content:flex-end;
+`;
+const ActualPrice = styled.Text `
+font-size:8;
+color:${Colors.greyColor};
+margin-left: 10px;
 `;
 
 function formatRupiah(angka, prefix){
@@ -49,7 +62,7 @@ function formatRupiah(angka, prefix){
 	return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
 }
 
-const ProductCard = ({ imgSrc, name, price, id, navigation }) => (
+const ProductCard = ({ imgSrc, name, price,display_price, id, navigation }) => (
   <TouchableWithoutFeedback onPress={() => navigation.navigate("Product", {
     itemId: id,
   })}>
@@ -64,7 +77,12 @@ const ProductCard = ({ imgSrc, name, price, id, navigation }) => (
         />
       </ImageContainer>
       <Name>{name}</Name>
+      <PriceContainer>
       <Price>{`${formatRupiah(price,"")}`}</Price>
+      <ActualPriceContainer>
+      <ActualPrice style = {    { textDecorationLine: 'line-through', textDecorationStyle: 'solid' } }> {formatRupiah(display_price+"","")} </ActualPrice> 
+      </ActualPriceContainer>
+      </PriceContainer>
     </Container>
   </TouchableWithoutFeedback>
 );

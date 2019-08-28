@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, Image, StyleSheet, View } from "react-native";
 import {
     createStackNavigator,
     createBottomTabNavigator
@@ -18,6 +18,14 @@ const StackNavOptions = {
     headerTitleStyle: { fontSize: 14, color: Colors.blackColor }
 };
 
+const styles = StyleSheet.create({
+    image: {
+        alignSelf: 'stretch',
+        width: 119,
+        height: 20,
+        marginTop: 5,
+    },
+});
 const HomeStack = createStackNavigator({
     Home: HomeScreen
 }, {
@@ -26,8 +34,9 @@ const HomeStack = createStackNavigator({
 
 HomeStack.navigationOptions = {
     tabBarIcon: ({ focused }) => ( <
-        TabBarIcon focused = { focused }
-        name = { Platform.OS === "ios" ? `ios-home` : "md-home" }
+        Image style = { styles.image }
+        resizeMode = { 'contain' }
+        source = { focused ? require("../assets/images/home_icon_lit.png") : require("../assets/images/home_icon.png") }
         />
     )
 };
@@ -65,7 +74,7 @@ HomeStack.navigationOptions = {
 const CartStack = createStackNavigator({
     Cart: CartScreen
 }, {
-    navigationOptions: {...StackNavOptions }
+    navigationOptions: {}
 });
 
 CartStack.navigationOptions = {

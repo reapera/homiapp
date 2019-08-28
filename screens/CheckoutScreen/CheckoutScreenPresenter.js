@@ -60,10 +60,6 @@ const DiscountedPrice = styled.Text `
 text-align:right;
 color:orange;
 `;
-const ActualPrice = styled.Text `
-text-align:right;
-font-size:10;
-`;
 const Row = styled.View `
 flex-direction:row;
 `;
@@ -71,7 +67,7 @@ const NoData = styled.View `
 flex-direction:column;
 justify-content:center;
 text-align:center;
-height:80%;
+height:500;
 `;
 const Centering = styled.View `
 flex-direction:row;
@@ -119,11 +115,11 @@ justify-content: flex-end;
 padding:20px;
 `;
 const ViewBox = styled.View`
-padding-left:25px;
+padding-left:30px;
 padding-top:5px;
 `;
 const IconContainer = styled.View`
-width:22px;
+width:25px;
 `;
 function formatRupiah(angka, prefix){
 	var number_string = angka.replace(/[^,\d]/g, '').toString(),
@@ -230,7 +226,6 @@ class CheckoutScreenPresenter extends Component {
                   </QWrapper> 
                   <Price>
                     <DiscountedPrice> {formatRupiah(data.price+"","")} </DiscountedPrice> 
-                    <ActualPrice style = {    { textDecorationLine: 'line-through', textDecorationStyle: 'solid' } }> {formatRupiah(data.display_price+"","")} </ActualPrice> 
                   </Price> 
                 </QPWrapper> 
               </CartDet> 

@@ -1,5 +1,5 @@
-import React from "react";
-import { Platform, Image, StyleSheet, View } from "react-native";
+import React, { Component } from "react";
+import { Platform, Image, StyleSheet, View,Text } from "react-native";
 import styled from "styled-components";
 import { Ionicons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
@@ -22,6 +22,10 @@ const Input = styled.TextInput`
   width: ${Platform.OS === "ios" ? "90%" : "91%"};
   height: ${Platform.OS === "ios" ? "40px" : "auto"};
 `;
+
+const CloseBtn = styled.TouchableOpacity`
+`;
+
 const styles = StyleSheet.create({
   image: {
       alignSelf: 'stretch',
@@ -43,11 +47,16 @@ const styles = StyleSheet.create({
     marginTop:0,
     marginBottom:10,
     padding:10,
-    minHeight:35
+    minHeight:35,
+    textAlignVertical:'top',
   },
 });
-const SearchBarPresenter = ({ onSubmit, value, updateValue, clearValue }) => (
-  <Container>
+
+class SearchBarPresenter extends Component {
+  
+  render() {
+    return(
+      <Container>
     <View style={styles.center}>
     <Image
       style={styles.image}
@@ -58,18 +67,23 @@ const SearchBarPresenter = ({ onSubmit, value, updateValue, clearValue }) => (
     <View style={styles.search}>
     <Ionicons name="ios-search" size={20} color="#000"/>
     <Input
-      value={value}
-      onChangeText={updateValue}
-      onSubmitEditing={onSubmit}
-      placeholder="Cari bahan bangunan"
+      value={this.props.value}
+      onChangeText={this.props.updateValue}
+      onSubmitEditing={this.props.onSubmit}
+      placeholder="Cari produk"
       blurOnSubmit
       returnKeyType="search"
       underlineColorAndroid="white"
     />
+    {this.props.value?
+    <CloseBtn onPress={this.props.clearValue}><Ionicons name="ios-close" size={20} color="#000"/></CloseBtn>:(<Text></Text>)
+    }
+    
     </View>
   </Container>
-);
-
+    );
+  }
+}
 SearchBarPresenter.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
