@@ -208,6 +208,8 @@ class CheckoutScreenPresenter extends Component {
       let addedItems = this.props.cartItems.length > 0 ?
       (
       this.props.cartItems.map((data) => {
+        if(data.selected){
+          
           return(
             <Row key={'mykey' + data.id}>
             <CartContainer>
@@ -232,6 +234,7 @@ class CheckoutScreenPresenter extends Component {
             </CartContainer> 
           </Row> 
           );
+        }
       }) 
       ):(
       <NoData>

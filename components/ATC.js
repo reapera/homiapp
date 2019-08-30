@@ -107,6 +107,22 @@ function formatRupiah(angka, prefix){
 	rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
 	return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
 }
+const minusIcon = (isMinusDisabled, touchableDisabledColor, touchableColor) => {
+  return <Ionicons
+                    name="ios-remove"
+                    color={isMinusDisabled ? 'lightgrey' : 'black'}
+                    size={24}
+                  />
+};
+
+const plusIcon = (isPlusDisabled, touchableDisabledColor, touchableColor) => {
+  return <Ionicons
+                    name="ios-add"
+                    color={isPlusDisabled ? 'lightgrey' : 'black'}
+                    size={24}
+                  />
+};
+
 class ATC extends Component {
     state = {
         modalVisible: false,
@@ -165,7 +181,7 @@ class ATC extends Component {
                     <Divider/>
                     <Quantity>
                     <Text>Jumlah</Text>
-                    <Counter start={1} onChange={this.onChange.bind(this)} max={100} touchableColor="gray" touchableDisabledColor="lightgray"/>
+                    <Counter start={1} onChange={this.onChange.bind(this)} max={100} touchableColor="gray" touchableDisabledColor="lightgray"  minusIcon={minusIcon} plusIcon={plusIcon}/>
                     </Quantity>
                     <ATCbtn onPress={() => { this.props.onPress(this.props.product, this.qty);this.setModalVisible(!this.state.modalVisible); this.qty=1;this.props.navigation.navigate("Cart");}}>
                         <BtnText>Masukan ke Keranjang</BtnText>

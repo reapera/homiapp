@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { Text, View, Image } from 'react-native';
 import { withNavigation } from "react-navigation";
-import Counter from "react-native-counters";
 import CheckBox from 'react-native-check-box'
 import { connect } from 'react-redux'
 import Layout from "../../constants/Layout";
 import AutoHeightImage from "react-native-auto-height-image";
+import { Ionicons } from "@expo/vector-icons";
 
 const ScrollView = styled.ScrollView``;
 const Container = styled.View `
@@ -49,7 +49,6 @@ const TitleWrapper = styled.View `
 const QWrapper = styled.View `
   flex-direction: column;
   justify-content:flex-end;
-  height:100%;
 `;
 const DiscountedPrice = styled.Text `
 text-align:right;
@@ -90,6 +89,10 @@ flex-direction: row;
 justify-content: space-between;
 `;
 
+const Removebtn = styled.TouchableOpacity`
+flex-direction:column;
+justify-content:flex-end;
+`;
 const ATCbtn = styled.TouchableOpacity`
 background-color:orange;
 color:white;
@@ -128,13 +131,36 @@ function formatRupiah(angka, prefix){
 	rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
 	return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
 }
+function checker(product) {
+  return product.selected;
+}
 class CartScreenPresenter extends Component {
-    onChange(number, type) {
-        // 1, + or -
+    increase(product) {
+        this.props.increaseItem(product);
     }
-    state = {
-        isChecked: false,
-    };
+    reduce(product) {
+        this.props.reduceItem(product);
+    }
+    remove(product){
+      this.props.removeItem(product);
+    }
+    check(product){
+      this.props.checkItem(product);
+    }
+    checkAll(){
+      if(this.props.cartItems.every(checker))
+      {
+        this.props.cartItems.map((data) => {
+            this.check(data)
+        })
+      }else{  
+      this.props.cartItems.map((data) => {
+        if (!data.selected){
+          this.check(data)
+        }
+      })
+      }
+    }
     render() {
       let addedItems = this.props.cartItems.length > 0 ?
       (
@@ -143,7 +169,7 @@ class CartScreenPresenter extends Component {
             <Row key={'mykey' + data.id}>
             <CheckBoxContainer>
               <CheckBox  key={'chk' + data.id}
-              onClick = {() => { }}
+              onClick = {()=>{this.check(data)}}
               isChecked = {data.selected}
               checkBoxColor = "orange" 
               />
@@ -159,9 +185,31 @@ class CartScreenPresenter extends Component {
                 <Text> {data.name}</Text> 
                 </TitleWrapper>
                 <QPWrapper>
+                    
+                  <Removebtn onPress={()=>{this.reduce(data)}}>
+                    <Ionicons
+                    name="ios-remove-circle-outline"
+                    color='lightgrey'
+                    size={24}
+                  />
+                  </Removebtn>
                   <QWrapper>
-                  <Counter start = { data.quantity }onChange = { this.onChange.bind(this) }max = { 100 }touchableColor = "gray"touchableDisabledColor = "lightgray" />
-                  </QWrapper> 
+                  <Text>{ data.quantity }</Text>
+                  </QWrapper>
+                  <Removebtn onPress={()=>{this.increase(data)}}>
+                    <Ionicons
+                    name="ios-add-circle-outline"
+                    color='lightgrey'
+                    size={24}
+                  />
+                  </Removebtn>
+                  <Removebtn onPress={()=>{this.remove(data)}}>
+                    <Ionicons
+                    name="ios-trash"
+                    color='lightgrey'
+                    size={24}
+                  />
+                  </Removebtn>
                   <Price>
                     <DiscountedPrice> {formatRupiah(data.price+"","")} </DiscountedPrice> 
                     <ActualPrice style = {    { textDecorationLine: 'line-through', textDecorationStyle: 'solid' } }> {formatRupiah(data.display_price+"","")} </ActualPrice> 
@@ -199,8 +247,8 @@ class CartScreenPresenter extends Component {
             <QPWrapper>
             <CheckBoxContainer>
               <CheckBox 
-              onClick = {() => {this.setState({isChecked: !this.state.isChecked})    }}
-              isChecked = {this.state.isChecked}
+              onClick = {() => {this.checkAll()}}
+              isChecked = {this.props.cartItems.every(checker)}
               checkBoxColor = "orange" 
               />
             </CheckBoxContainer> 
@@ -228,7 +276,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      removeItem: (product) => dispatch({ type: 'REMOVE_FROM_CART', payload: product })
+      removeItem: (product) => dispatch({ type: 'REMOVE_FROM_CART', payload: {"product":product} }),
+      checkItem: (product) => dispatch({ type: 'CHECK_FROM_CART', payload: {"product":product} }),
+      increaseItem: (product) => dispatch({ type: 'INCREASE_FROM_CART', payload: {"product":product} }),
+      reduceItem: (product) => dispatch({ type: 'REDUCE_FROM_CART', payload: {"product":product} })
   }
 }
 
