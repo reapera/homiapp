@@ -71,12 +71,12 @@ const Quantity = styled.View`
 const NamePrice = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   width:100%;
 `;
 
 const NamePriceText = styled.Text`
-  font-size: 24px;
+  font-size: 20px;
   color: ${Colors.blackColor};
   font-weight: 600;
 `;
@@ -86,7 +86,11 @@ const Divider = styled.View`
   background-color: rgba(151, 151, 151, 0.1);
   margin-bottom: 25px;
 `;
-
+const Center = styled.View`
+  flex-direction:column;
+  justify-content:center;
+  height:64;
+`
 function formatRupiah(angka, prefix){
 	var number_string = angka.replace(/[^,\d]/g, '').toString(),
 	split   		= number_string.split(','),
@@ -146,10 +150,10 @@ class ATC extends Component {
                             resizeMode="cover"
                             style={{width: 64, height: 64, borderRadius:10, marginRight:10}}
                             />
-                        <View>
+                        <Center>
                             <NamePriceText>{this.props.product.name}</NamePriceText>
                             <NamePriceText>{formatRupiah(this.props.product.price+"","")}</NamePriceText>
-                        </View>
+                        </Center>
                         </ModalHeader>
                     <TouchableHighlight
                         onPress={() => {

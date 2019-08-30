@@ -47,7 +47,7 @@ const NamePrice = styled.View`
 `;
 
 const NamePriceText = styled.Text`
-  font-size: 24px;
+  font-size: 20px;
   color: ${Colors.blackColor};
   font-weight: 600;
 `;
