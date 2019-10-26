@@ -1,50 +1,52 @@
 {
-  "name": "my-new-project",
-  "main": "node_modules/expo/AppEntry.js",
-  "private": true,
-  "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "eject": "expo eject"
-  },
-  "jest": {
-    "preset": "jest-expo"
-  },
-  "dependencies": {
-    "@expo/samples": "2.1.1",
-    "@expo/vector-icons": "^8.0.0",
-    "expo": "^31.0.2",
-    "prop-types": "^15.6.2",
-    "react": "16.5.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
-    "react-native-auto-height-image": "^1.0.5",
-    "react-native-check-box": "^2.1.7",
-    "react-native-counters": "0.0.1",
-    "react-native-modal": "^11.1.0",
-    "react-native-star-rating": "^1.1.0",
-    "react-native-swiper": "^1.5.14",
-    "react-navigation": "^2.18.2",
-    "react-redux": "^6.0.1",
-    "redux": "^4.0.4",
-    "styled-components": "^4.1.1"
-  },
-  "devDependencies": {
-    "@types/expo": "^31.0.0",
-    "@types/expo__vector-icons": "^6.2.3",
-    "@types/react": "^16.7.6",
-    "@types/react-native": "^0.57.13",
-    "babel-eslint": "^10.0.1",
-    "babel-preset-expo": "^5.0.0",
-    "eslint": "^5.9.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-config-prettier": "^3.3.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jsx-a11y": "^6.1.2",
-    "eslint-plugin-prettier": "^3.0.0",
-    "eslint-plugin-react": "^7.11.1",
-    "jest-expo": "^31.0.0",
-    "prettier": "^1.15.2",
-    "tslib": "^1.9.3"
-  }
+    "name": "my-new-project",
+    "main": "node_modules/expo/AppEntry.js",
+    "private": true,
+    "scripts": {
+        "start": "expo start",
+        "android": "expo start --android",
+        "ios": "expo start --ios",
+        "eject": "expo eject"
+    },
+    "jest": {
+        "preset": "jest-expo"
+    },
+    "dependencies": {
+        "@expo/samples": "2.1.1",
+        "@expo/vector-icons": "^8.0.0",
+        "expo": "^33.0.0",
+        "expo-asset": "~7.0.0",
+        "prop-types": "^15.6.2",
+        "react": "16.5.0",
+        "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
+        "react-native-auto-height-image": "^1.0.5",
+        "react-native-check-box": "^2.1.7",
+        "react-native-counters": "0.0.1",
+        "react-native-modal": "^11.1.0",
+        "react-native-star-rating": "^1.1.0",
+        "react-native-swiper": "^1.5.14",
+        "react-native-woocommerce-api": "^1.0.12",
+        "react-navigation": "^2.18.2",
+        "react-redux": "^6.0.1",
+        "redux": "^4.0.4",
+        "styled-components": "^4.1.1"
+    },
+    "devDependencies": {
+        "@types/expo": "^32.0.0",
+        "@types/expo__vector-icons": "^6.2.3",
+        "@types/react": "^16.7.6",
+        "@types/react-native": "^0.57.13",
+        "babel-eslint": "^10.0.1",
+        "babel-preset-expo": "^5.0.0",
+        "eslint": "^5.9.0",
+        "eslint-config-airbnb": "^17.1.0",
+        "eslint-config-prettier": "^3.3.0",
+        "eslint-plugin-import": "^2.14.0",
+        "eslint-plugin-jsx-a11y": "^6.1.2",
+        "eslint-plugin-prettier": "^3.0.0",
+        "eslint-plugin-react": "^7.11.1",
+        "jest-expo": "^33.0.0",
+        "prettier": "^1.15.2",
+        "tslib": "^1.9.3"
+    }
 }

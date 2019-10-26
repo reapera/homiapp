@@ -3,6 +3,7 @@ import styled from "styled-components";
 import MasonryProducts from "../../components/MasonryProducts";
 import { StatusBar } from "react-native";
 import {SERVER_URL} from "../../constant";
+import {WooCommerceAPIs} from "../../WooCommerce/config";
 
 const Container = styled.View`
   background-color: white;
@@ -18,6 +19,17 @@ class HomeScreenPresenter extends Component {
       dataSource:[]
      };
    }
+   wooCommerce = WooCommerceAPIs.get('products',{
+  })
+  .then(data => {
+    this.setState({
+      loading: false,
+      dataSource: data
+      })
+  })
+  .catch(error => {
+    console.log(error);
+    });
    loadData = search =>{
       console.log("req"+search);
       fetch(SERVER_URL+"/product?s="+search)
@@ -31,7 +43,8 @@ class HomeScreenPresenter extends Component {
       .catch(error=>console.log(error)) //to catch the errors if any
    };
    componentDidMount(){
-    this.loadData(this.props.search);
+    //this.loadData(this.props.search);
+    this.wooCommerce;
    }
    componentDidUpdate(prevProps) {
     if (this.props.search !== prevProps.search) {

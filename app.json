@@ -1,11 +1,11 @@
 {
   "expo": {
     "name": "Homia",
-    "description": "Homia ecommerce v0.12",
+    "description": "Homia ecommerce v0.20",
     "slug": "Homia",
     "privacy": "public",
     "primaryColor": "#007BFF",
-    "sdkVersion": "31.0.0",
+    "sdkVersion": "35.0.0",
     "platforms": [
       "android"
     ],

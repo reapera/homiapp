@@ -50,9 +50,9 @@ class MasonryProducts extends Component {
     <Column>
         {splitArray(this.props.products).firstHalf.map(product => (
           <ProductCard
-            imgSrc={product.image_url}
+            imgSrc={product.images[0].src}
             price={product.price+""}
-            display_price={product.display_price+""}
+            display_price={product.price+""}
             name={product.name}
             id={product.id}
             key={product.name}
@@ -62,9 +62,9 @@ class MasonryProducts extends Component {
       <Column>
         {splitArray(this.props.products).secondHalf.map(product => (
           <ProductCard
-            imgSrc={product.image_url}
+            imgSrc={product.images[0].src}
             price={product.price+""}
-            display_price={product.display_price+""}
+            display_price={product.price+""}
             name={product.name}
             id={product.id}
             key={product.name}
