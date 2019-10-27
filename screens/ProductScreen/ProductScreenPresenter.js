@@ -10,6 +10,7 @@ import ATC from "../../components/ATC";
 import {SERVER_URL} from "../../constant";
 import { withNavigation } from "react-navigation";
 import { connect } from 'react-redux'
+import {WooCommerceAPIs} from "../../WooCommerce/config";
 
 const getHeight = () =>
   Layout.window.height <= 667
@@ -81,7 +82,7 @@ color: ${Colors.blackColor};
 font-weight: 600;
 margin-bottom: 25px;
 `;
-
+const regex = /(<([^>]+)>)/ig;
 function formatRupiah(angka, prefix){
 	var number_string = angka.replace(/[^,\d]/g, '').toString(),
 	split   		= number_string.split(','),
@@ -105,22 +106,49 @@ class ProductScreenPresenter extends Component {
     this.state = {
       loading: true,
       dataSource:{image_url:"https://1zmwq81820r61pswmu19upqf-wpengine.netdna-ssl.com/wp-content/uploads/2019/02/dummy.png",name:"",price:"",images:[]},
-      images:[]
+      reviews:[]
      };
    }
    componentDidMount(){
-    fetch(SERVER_URL+"/product/" + this.props.navigation.getParam("itemId", 0))
-    .then(response => response.json())
-    .then((responseJson)=> {
+     
+   WooCommerceAPIs.get('products/' + this.props.navigation.getParam("itemId", 0),{
+  })
+  .then(data => {
+    data.description = data.description.replace(regex, '');
+    data.image_url = data.images[0].src
+    this.setState({
+      loading: false,
+      dataSource: data
+      })
+  })
+  .catch(error => {
+    console.log(error);
+    });
+    WooCommerceAPIs.get('products/reviews',{
+      'product':this.props.navigation.getParam("itemId", 0)
+    },{})
+    .then(data => {
+      console.log(data);
       this.setState({
-       loading: false,
-       dataSource: responseJson
-      });
-      var joined = this.state.images.concat({"image_url":this.state.dataSource.image_url,"id":-1});
-      joined = joined.concat(this.state.dataSource.images);
-      this.setState({ images: joined })
+        loading: false,
+        reviews: data
+        })
     })
-    .catch(error=>console.log(error)) //to catch the errors if any
+    .catch(error => {
+      console.log(error);
+      });
+    // fetch(SERVER_URL+"/product/" + this.props.navigation.getParam("itemId", 0))
+    // .then(response => response.json())
+    // .then((responseJson)=> {
+    //   this.setState({
+    //    loading: false,
+    //    dataSource: responseJson
+    //   });
+    //   var joined = this.state.images.concat({"image_url":this.state.dataSource.image_url,"id":-1});
+    //   joined = joined.concat(this.state.dataSource.images);
+    //   this.setState({ images: joined })
+    // })
+    // .catch(error=>console.log(error)) //to catch the errors if any
     }
     render() {
       return (
@@ -132,13 +160,13 @@ class ProductScreenPresenter extends Component {
               activeDotColor="white"
               dotColor="rgba(255, 255, 255, 0.3)"
             >
-              {this.state.images.map((data) => {
+              {this.state.dataSource.images.map((data) => {
                   return(
                     <Image
                     key={data.id}
                       source={{
                         uri:
-                          data.image_url
+                          data.src
                       }}
                     />
                   );
@@ -152,9 +180,8 @@ class ProductScreenPresenter extends Component {
               </NamePrice>
               <Divider />
               <Description>
-              {this.state.dataSource.desc}
+              {this.state.dataSource.description}
               </Description>
-              <ReadMore>Read More</ReadMore>
               <Divider />
               <Bold16>
                 Informasi Penjual
@@ -168,19 +195,17 @@ class ProductScreenPresenter extends Component {
               <Bold16>
                 Ulasan Barang
               </Bold16>
-              <UserReview
-                name="Keith Mills"
-                rating={4}
-                title="Barangnya Oke!"
-                desc="kualitas okeeee"
-              />
-              <Divider />
-              <UserReview
-                name="Jono Joni"
-                rating={3}
-                title="Barangnya Ga Oke!"
-                desc="kualitas ga okeeee"
-              />
+              {this.state.reviews.map((data) => {
+                data.review = data.review.replace(regex, '');
+                  return(
+                    <UserReview
+                      key={data.id}
+                      name={data.reviewer}
+                      rating={data.rating}
+                      desc={data.review}
+                    />
+                  );
+              })}
               <ReadMoreReview>Lihat Ulasan Lainnya (81)</ReadMoreReview>
             </DataContainer>
           </ScrollView>

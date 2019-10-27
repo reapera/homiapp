@@ -19,17 +19,20 @@ class HomeScreenPresenter extends Component {
       dataSource:[]
      };
    }
-   wooCommerce = WooCommerceAPIs.get('products',{
-  })
-  .then(data => {
-    this.setState({
-      loading: false,
-      dataSource: data
-      })
-  })
-  .catch(error => {
-    console.log(error);
-    });
+   wooCommerce = search =>{
+    WooCommerceAPIs.get('products',{
+      search: search
+    })
+   .then(data => {
+     this.setState({
+       loading: false,
+       dataSource: data
+       })
+   })
+   .catch(error => {
+     console.log(error);
+     });
+   } 
    loadData = search =>{
       console.log("req"+search);
       fetch(SERVER_URL+"/product?s="+search)
@@ -44,11 +47,13 @@ class HomeScreenPresenter extends Component {
    };
    componentDidMount(){
     //this.loadData(this.props.search);
-    this.wooCommerce;
+    this.wooCommerce(this.props.search);
    }
    componentDidUpdate(prevProps) {
     if (this.props.search !== prevProps.search) {
-      this.loadData(this.props.search);
+      //this.loadData(this.props.search);
+      
+    this.wooCommerce(this.props.search);
     }
   }
     render() {
