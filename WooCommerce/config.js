@@ -316,7 +316,7 @@ WooCommerceAPI.prototype.options = function(endpoint, callback) {
     return this._request('OPTIONS', endpoint, null, callback);
 };
 export var WooCommerceAPIs = new WooCommerceAPI({
-    url: 'http://homia.xyz', // Your store URL
+    url: 'http://homia.id', // Your store URL
     ssl: false,
     consumerKey: 'ck_95f0cb98604d8f7398a5aacca12ed3ef8542020f', // Your consumer secret
     consumerSecret: 'cs_f46c79ed12817396f662a8af3b28fd620b18f2a6', // Your consumer secret

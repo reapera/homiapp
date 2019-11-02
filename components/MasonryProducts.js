@@ -36,8 +36,8 @@ color:${Colors.greyColor}
 const splitArray = arr => {
   const { length } = arr;
   const half = length / 2;
-  const firstHalf = arr.slice(0, half);
-  const secondHalf = arr.slice(half, length);
+  const secondHalf = arr.slice(0, half);
+  const firstHalf = arr.slice(half, length);
   return { firstHalf, secondHalf };
 };
 class MasonryProducts extends Component {
@@ -83,10 +83,10 @@ class MasonryProducts extends Component {
         </Centering>
         <Space></Space>
         <Centering>
-        <GreyText>Maaf, Pencarian tidak ditemukan</GreyText>
+        <GreyText>Sorry, We can't find what you are searching</GreyText>
         </Centering>
         <Centering>
-        <GreyText>Coba cari produk lainnya</GreyText>
+        <GreyText>Try search another product</GreyText>
         </Centering>
       </NoData>
     )

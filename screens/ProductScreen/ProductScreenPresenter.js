@@ -21,6 +21,9 @@ const Container = styled.View`
   flex: 1;
   background-color: white;
 `;
+const Text = styled.Text`
+  margin-left: 1px;
+`;
 
 const ScrollView = styled.ScrollView``;
 
@@ -114,7 +117,18 @@ class ProductScreenPresenter extends Component {
    WooCommerceAPIs.get('products/' + this.props.navigation.getParam("itemId", 0),{
   })
   .then(data => {
-    data.description = data.description.replace(regex, '');
+    console.log(data);
+    data.short_description = data.short_description.replace(regex, '');
+    var srtDesc1 = data.short_description.split("Days").pop();
+    var srtDesc2 = data.short_description.split("Delivery");
+    data.short_description = srtDesc1+" "+srtDesc2[0];
+    var indexOfProdFrom = data.description.indexOf('<strong>');
+    var indexOfProdTo = data.description.indexOf('</strong>');
+    data.product_from = data.description.substr(indexOfProdFrom+8, indexOfProdTo - indexOfProdFrom-8);
+    
+    var delivTimeFrom = data.description.indexOf('DKI Jakarta: ');
+    var delivTimeTo = data.description.indexOf('Days');
+    data.delivery_time = data.description.substr(delivTimeFrom+13, delivTimeTo - delivTimeFrom-9);
     data.image_url = data.images[0].src
     this.setState({
       loading: false,
@@ -180,22 +194,25 @@ class ProductScreenPresenter extends Component {
               </NamePrice>
               <Divider />
               <Description>
-              {this.state.dataSource.description}
+              {this.state.dataSource.short_description}
               </Description>
               <Divider />
               <Bold16>
-                Informasi Penjual
+                Supplier info
               </Bold16>
               <UserPartials
-                name="Keith Mills"
+                name={this.state.dataSource.product_from ? this.state.dataSource.product_from :"..."}
                 rating={4.6}
                 avatarUrl={require("../../assets/images/smAvatar.png")}
+                deliveryTime={this.state.dataSource.delivery_time ? this.state.dataSource.delivery_time :"..."}
               />
               <Divider />
               <Bold16>
-                Ulasan Barang
+                Reviews
               </Bold16>
-              {this.state.reviews.map((data) => {
+              {this.state.reviews.length > 0 ? 
+              (
+                this.state.reviews.map((data) => {
                 data.review = data.review.replace(regex, '');
                   return(
                     <UserReview
@@ -205,8 +222,14 @@ class ProductScreenPresenter extends Component {
                       desc={data.review}
                     />
                   );
-              })}
-              <ReadMoreReview>Lihat Ulasan Lainnya (81)</ReadMoreReview>
+              })
+              )
+              :
+              (
+                <Text>No Reviews.</Text>
+              )
+            }
+              {/* <ReadMoreReview>See more reviews (81)</ReadMoreReview> */}
             </DataContainer>
           </ScrollView>
           <ATC 

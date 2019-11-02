@@ -245,10 +245,10 @@ class CheckoutScreenPresenter extends Component {
           />
           </Centering>
           <Centering>
-          <Text>Tidak ada barang di cart</Text>
+          <Text>No items in cart</Text>
           </Centering>
           <Centering>
-          <Text>Mulai beli sekarang!</Text>
+          <Text>Buy now!</Text>
           </Centering>
           </NoData>
       )

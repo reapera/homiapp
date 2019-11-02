@@ -44,7 +44,7 @@ const IconContainer = styled.View`
   height: 22px;
   width: 26px;
 `;
-const UserPartials = ({ avatarUrl, rating, name }) => (
+const UserPartials = ({ avatarUrl, rating, name, deliveryTime }) => (
   <Container>
     <Column>
       <Avatar source={avatarUrl} />
@@ -59,7 +59,7 @@ const UserPartials = ({ avatarUrl, rating, name }) => (
         name={Platform.OS === "ios" ? "ios-pin" : "md-pin"}
         size={Platform.OS === "ios" ? 20 : 20}
       /></IconContainer>
-      <Text>Bekasi Timur</Text>
+      <Text>DKI Jakarta</Text>
     </Column>
     <Column>
       <IconContainer>
@@ -68,7 +68,7 @@ const UserPartials = ({ avatarUrl, rating, name }) => (
         size={Platform.OS === "ios" ? 20 : 20}
       /></IconContainer>
       <Text>
-      Waktu pengantaran 1-3 hari</Text>
+      Delivery time: {deliveryTime}</Text>
     </Column>
   </Container>
 );

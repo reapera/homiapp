@@ -80,7 +80,7 @@ const ProductCard = ({ imgSrc, name, price,display_price, id, navigation }) => (
       <PriceContainer>
       <Price>{`${formatRupiah(price,"")}`}</Price>
       <ActualPriceContainer>
-      <ActualPrice style = {    { textDecorationLine: 'line-through', textDecorationStyle: 'solid' } }> {formatRupiah(display_price+"","")} </ActualPrice> 
+      {/* <ActualPrice style = {    { textDecorationLine: 'line-through', textDecorationStyle: 'solid' } }> {formatRupiah(display_price+"","")} </ActualPrice>  */}
       </ActualPriceContainer>
       </PriceContainer>
     </Container>
